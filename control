@@ -1,0 +1,10 @@
+Package: com.yan.minibea
+Name: MiniBea
+Version: 0.1
+Architecture: iphoneos-arm
+Description: A mini version of Bea maintaining basic features for latest version of BeReal.
+Maintainer: yan
+Author: yan
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
+Conflicts: com.yan.bea

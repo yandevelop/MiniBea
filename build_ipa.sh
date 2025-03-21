@@ -27,7 +27,8 @@ ABS_IPA_PATH=$(realpath "$IPA_PATH")
 ABS_JAILED_DEB=$(realpath "$JAILED_DEB")
 
 IPA_FILENAME=$(basename "$IPA_PATH")
-OUTPUT_NAME="${IPA_FILENAME%.*}_patched"
+TWEAK_VERSION=$(grep -E '^Version:' "$(pwd)/control" | sed 's/Version: *//')
+OUTPUT_NAME="${IPA_FILENAME%.*}+com.yan.minibea_${TWEAK_VERSION}"
 
 echo "Injecting tweak into IPA..."
 

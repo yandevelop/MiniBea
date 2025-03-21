@@ -32,5 +32,7 @@ echo "Building rootless package"
 make clean > /dev/null
 make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless > /dev/null
 
+./build_ipa.sh
+
 echo "Finished building packages"
 exit 0

@@ -12,7 +12,7 @@ rm -rf ./packages
 
 echo "Building sideloaded version"
 make clean > /dev/null
-make clean package FINALPACKAGE=1  > /dev/null
+make clean package FINALPACKAGE=1 JAILED=1 > /dev/null
 
 JAILED_DEB_FILE=$(find ./packages -name "*.deb" -type f)
 

@@ -1,6 +1,6 @@
 Package: com.yan.minibea
 Name: MiniBea
-Version: 0.2
+Version: 0.2.1
 Architecture: iphoneos-arm
 Description: A mini version of Bea maintaining basic features for latest version of BeReal.
 Maintainer: yan

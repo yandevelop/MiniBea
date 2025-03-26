@@ -80,11 +80,16 @@
 - (void)drawRect:(CGRect)rect {
 	%orig;
 
-	for (int i = 1; i < [[self subviews] count]; i++) {
-		[[self subviews][i] setHidden:YES];
+	// Check if we need to remove subviews other than the main image (to keep the reaction&comment button)
+	// 1. Not posted yet & 2. Not tagged in that post (especially to keep the reshare button)
+	if ([NSStringFromClass([[self subviews].lastObject class]) isEqualToString:@"_TtCOCV7SwiftUI11DisplayList11ViewUpdater8Platform13CGDrawingView"] && [[self subviews] count] > 5) { 
+		for (int i = 1; i < [[self subviews] count]; i++) {
+			[[self subviews][i] setHidden:YES];
+		}
 	}
 
-	[[self subviews][0] setUserInteractionEnabled:YES];
+	// Every time we swich images it resets the user interaction stat, so we set the identifier and track it in the hook
+	[self subviews][0].accessibilityIdentifier = @"Beaw";
 
 	BeaButton *downloadButton = [BeaButton downloadButton];
 	downloadButton.layer.zPosition = 99;
@@ -101,7 +106,25 @@
 
 %hook DoubleMediaView
 - (BOOL)isUserInteractionEnabled {
-	return YES;
+	// This prevent us from using the reaction&comment button if we always return yes (although it allows us to switch images when not posted yet)
+	// so only apply it to the desired element
+	if ([[self accessibilityIdentifier] isEqualToString:@"Beaw"]){
+		return YES;
+	}
+	return %orig;
+}
+%end
+
+%hook UIViewController
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+	// BeReal somehow shows an error alert when using this tweak (at least on my device), so remove it
+    if ([viewControllerToPresent isKindOfClass:[UIAlertController class]]) {
+        UIAlertController *alert = (UIAlertController *)viewControllerToPresent;
+        if ([alert.message isEqualToString:@"[\"Unable to load contents\"]"]) {
+            return;
+        }
+    }
+    %orig;
 }
 %end
 
